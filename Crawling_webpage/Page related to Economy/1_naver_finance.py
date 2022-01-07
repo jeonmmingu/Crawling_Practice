@@ -2,7 +2,7 @@
 
 # 아래 두 항목에 대해서 검색 후 환경에 맞게 설정 !!
 # "User-Agent" 를 환경에 맞게 다시 설정.(Google에 user agent string 검색)
-# "chromedriver" 경로를 환경에 맞게 다시 설정.(윈도우 : cmd, 맥 : terminal 에서 chromedriver의 경로 탐색)
+# "chromedriver" 경로를 환경에 맞게 다시 설정.(윈도우 : cmd, 맥 os: terminal 에서 chromedriver 경로 탐색)
 
 ################################################################################################
 
@@ -58,7 +58,6 @@ while True:
     curr_page += 1
 ################################################################################################
 print("시가총액 완료")
-
 ######################################## ETF ###################################################
 
 def naver_finance_crawling(title):
@@ -93,7 +92,6 @@ def naver_finance_crawling(title):
     print(title, " 완료!")
     f.close()
 
-################################################################################################
 
 # 네이버 금융 - Etf
 url = "https://finance.naver.com/sise/etf.naver"
@@ -101,7 +99,7 @@ url = "https://finance.naver.com/sise/etf.naver"
 # Selenium 사용 방법에 대해 설정
 # headless Chrome 방식으로 Selenium 사용
 options = webdriver.ChromeOptions()
-options.headless = True
+options.headless = False
 # Chrome 페이지 중 headless 웹 스크래핑을 차단하는 경우가 있기 때문에 User Agent를 설정 <<자신의 환경에 맞게 변경!!>>
 options.add_argument("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36")
 browser = webdriver.Chrome("/usr/local/bin/chromedriver", options=options)  # chromedriver의 경로를 지정해주어야 한다.
