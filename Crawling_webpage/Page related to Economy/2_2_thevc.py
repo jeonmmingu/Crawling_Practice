@@ -20,8 +20,8 @@ url = "https://thevc.kr/"
 options = webdriver.ChromeOptions()
 options.headless = False
 # Chrome 페이지 중 headless 웹 스크래핑을 차단하는 경우가 있기 때문에 User Agent를 설정 <<자신의 환경에 맞게 변경!!>>
-options.add_argument("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36")
-browser = webdriver.Chrome("/usr/local/bin/chromedriver", options=options)  # chromedriver의 경로를 지정해주어야 한다.
+options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36")
+browser = webdriver.Chrome("D:\ChromeDV\chromedriver.exe", chrome_options=options)  # chromedriver의 경로를 지정해주어야 한다.
 
 # thevc 로그인
 browser.get(url)
@@ -43,41 +43,39 @@ browser.get(url)
 
 
 # 스타트업 기업 목록 읽어오기
-f_r = open('비상장 스타트업 기업 목록.csv', 'r')
-reader = csv.reader(f_r)
+filePath = 'D:\Python_Crawling\Crawling_webpage\Page related to Economy\비상장 스타트업 기업 목록.csv'
+f_r = open(filePath, 'r', encoding='utf-8-sig')
+lines = f_r.readlines()
 
 i = 1
 find = False
 
-for line in reader:
+for line in lines:
 
-    browser.find_element(By.ID, "input-integrated-search").send_keys(line[0])
-    time.sleep(2)
+    browser.find_element(By.ID, "input-integrated-search").send_keys(line)
+    time.sleep(1)
 
     soup = BeautifulSoup(browser.page_source, "lxml")
     search_list = soup.find_all("p", attrs={"class": "vc-typo-ellipsis vc-typo-weight-bold"})
     for search in search_list:
-        print(line)
-        print(search.get_text().strip())
         result = search.get_text().strip()
-        if result == line[0].strip():
-            print("check!!")
+        if result == line.strip():
+            print(line.strip())
             find = True
 
     if find:
         find = False
-        browser.find_element(By.CLASS_NAME, "vc-image-box").click()
+        browser.find_element(By.CLASS_NAME, "clickable").click()
         time.sleep(1)
-        soup = BeautifulSoup(browser.page_source, "lxml")
-        Basic_info = soup.find("div", attrs={"class": "vc-block-wrap"}).find_all("div", attrs={
-            "class": "vc-flex-container justify-between"})
-        for info in Basic_info:
-            print(i, ".", info.find("dt"), ":", info.find("dd").get_text())
-
+        browser.find_element(By.ID, "input-integrated-search").clear()
+        # soup = BeautifulSoup(browser.page_source, "lxml")
+        # Basic_info = soup.find("div", attrs={"class": "vc-block-wrap"}).find_all("div", attrs={
+        #     "class": "vc-flex-container justify-between"})
+        # for info in Basic_info:
+        #     print(i, ".", info.find("dt"), ":", info.find("dd").get_text())
     else:
         browser.find_element(By.ID, "input-integrated-search").clear()
-
-
+    time.sleep(1)
 
 
 
